@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <title>Document</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
+    <title>Todo</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./script.js"></script>
 </head>
 <body>
-    <h1>하하</h1>
+    <h1>Todo</h1>
+    <div class="todo-container">
+        <input type="text" id="todo-input" onkeydown="keyCodeCheck()" />
+        <ul>
+            <li>기상 하기</li>
+            <li>복습 하기</li>
+        </ul>
+    </div>
 </body>
 </html>
