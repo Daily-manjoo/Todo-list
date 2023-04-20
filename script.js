@@ -1,8 +1,18 @@
- 
+const todoInput = document.querySelector('#todo-input');
+
 const keyCodeCheck = function (){
-    if(window.event.keyCode === 13){ //13은  엔터
-        const inputValue = document.querySelector('#todo-input').value;
-        console.log(inputValue);
+    if(window.event.keyCode === 13 && todoInput.value !== ''){ //13은 엔터
+        const todoList = document.querySelector('#todo-list');
+        const newLi = document.createElement('li');
+        const newSpan = document.createElement('span');
+        
+
+        newSpan.textContent = todoInput.value;
+        newLi.appendChild(newSpan); //하위 노드 추가
+        todoList.appendChild(newLi);
+        todoList.appendChild(newLi);
+        todoInput.value = '';
+        
     }               
 }; 
     
