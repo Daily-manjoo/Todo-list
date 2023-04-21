@@ -8,13 +8,16 @@ const createTodo = function (){
     
     newBtn.addEventListener('click', ()=> {
         newLi.classList.toggle('complete')
-    })
+    });
+
+    newLi.addEventListener('dblclick', () => {
+        newLi.remove();
+    });
 
     newSpan.textContent = todoInput.value;
     newLi.appendChild(newBtn);
     newLi.appendChild(newSpan); //하위 노드 추가
     todoList.appendChild(newLi);
-    console.log(newLi);
     todoInput.value = '';
 }
 
