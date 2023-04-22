@@ -9,10 +9,12 @@ const createTodo = function (){
     
     newBtn.addEventListener('click', ()=> {
         newLi.classList.toggle('complete')
+        saveItemsFn(); //버튼이 눌렸을때 한번 더 함수 실행
     });
 
     newLi.addEventListener('dblclick', () => {
         newLi.remove();
+        
     });
 
     newSpan.textContent = todoInput.value;
@@ -49,6 +51,8 @@ const saveItemsFn = function (){
         };
         saveItems.push(todoObj);
     }
-    console.log(saveItems);
+
+    localStorage.setItem('saved-items', JSON.stringify(saveItem)); //키,밸류
+    
 }
     
