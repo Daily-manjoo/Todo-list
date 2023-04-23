@@ -22,11 +22,12 @@ const createTodo = function (storageData){
 
     newLi.addEventListener('dblclick', () => {
         newLi.remove();
+        saveItemsFn();
         
     });
 
-    if(storageData.complete) {
-        newLi.classList.add('complete'); //취소선 그어진 목록 그대로 반영 
+    if(storageData?.complete) { //옵셔널체이닝(?): 스토리지데이터가 실제 존재할때만 complete 찾기
+        newLi.classList.add('complete'); //취소선 그어진 목록 새로고침시 그대로 반영 
     }
 
 
@@ -42,8 +43,6 @@ const createTodo = function (storageData){
 const keyCodeCheck = function (){
     if(window.event.keyCode === 13 && todoInput.value){ //13은 엔터
         createTodo();
-        
-        
     }               
 };
 
@@ -52,6 +51,7 @@ const deleteAll = function (){
     for (let i = 0; i < liList.length; i++){
         liList[i].remove();
     }
+    saveItemsFn();
 };
 
 const saveItemsFn = function (){
@@ -65,13 +65,34 @@ const saveItemsFn = function (){
         saveItems.push(todoObj);
     }
 
-    localStorage.setItem('saved-items', JSON.stringify(saveItems)); //키,밸류
+    saveItems.length === 0 ? localStorage.removeItem('saved-items') : localStorage.setItem('saved-items', JSON.stringify(saveItems));
     
-}
+    
+};
 
 if (savedTodoList) {
     for(let i = 0; i <savedTodoList.length; i++){
         createTodo(savedTodoList[i])
     }
 }
-    
+
+const weatherSearch = function(position){
+    console.log(position.latitude);
+    const openWeatherRes = fetch(`https://api.openweathermap.org/data/2.8/onecall?lat=${position.latitude}&lon=${position.longitude}&appid=7a940c40f2bbdfd8cbac5abf9a4bb2a6`);
+    console.log(openWeatherRes);
+} // fetch는 api를 요청할떄 쓰는 함수
+
+const accessToGeo = function (position){
+    const positionObj = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+    }
+    weatherSearch(positionObj);
+}
+
+const askForLocation = function(){
+    navigator.geolocation.getCurrentPosition(accessToGeo, (err)=> {
+        console.log(err);
+    });
+};
+askForLocation();
