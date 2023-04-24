@@ -26,7 +26,7 @@ const createTodo = function (storageData){
         
     });
 
-    if(storageData?.complete) { //옵셔널체이닝(?): 스토리지데이터가 실제 존재할때만 complete 찾기
+    if(storageData?.complete) { //옵셔널체이닝: 스토리지데이터가 실제 존재할때만 complete 찾기
         newLi.classList.add('complete'); //취소선 그어진 목록 새로고침시 그대로 반영 
     }
 
