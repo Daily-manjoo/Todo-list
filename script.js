@@ -77,9 +77,16 @@ if (savedTodoList) {
 }
 
 const weatherSearch = function(position){
-    console.log(position.latitude);
-    const openWeatherRes = fetch(`https://api.openweathermap.org/data/2.8/onecall?lat=${position.latitude}&lon=${position.longitude}&appid=7a940c40f2bbdfd8cbac5abf9a4bb2a6`);
-    console.log(openWeatherRes);
+    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=7a940c40f2bbdfd8cbac5abf9a4bb2a6`
+    ).then((res)=> {
+        // JSON.parse() 바디+헤더 존재할때 json으로 받고 바디만 존재할땐 parse()
+        return res.json(); 
+    }).then((json)=> {
+        console.log(json.name, json.weather[0].description); //then을 리턴하면 한번 더 then을 쓸 수 있음
+    })
+    .catch((err)=> { //에러가 발생할 경우
+        console.error(err)
+    })
 } // fetch는 api를 요청할떄 쓰는 함수
 
 const accessToGeo = function (position){
@@ -95,4 +102,5 @@ const askForLocation = function(){
         console.log(err);
     });
 };
-askForLocation();
+ askForLocation();
+
