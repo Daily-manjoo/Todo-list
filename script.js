@@ -41,7 +41,7 @@ const createTodo = function (storageData){
 }
 
 const keyCodeCheck = function (){
-    if(window.event.keyCode === 13 && todoInput.value.trim() !== ''){ //13은 엔터
+    if(window.event.keyCode === 13 && todoInput.value.trim() !== ''){ //13은 엔터, trim은 공백 없애줌
         createTodo();
     }               
 };
