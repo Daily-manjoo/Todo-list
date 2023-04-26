@@ -76,26 +76,28 @@ if (savedTodoList) {
     }
 }
 
-const weatherSearch = function(position){
+const weatherSearch = function({position}){ //position도 latitude, longitude로 구조분해할당 가능. 아랫줄 position.latitude가 아니라 latitude만 써도 됨
     fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=7a940c40f2bbdfd8cbac5abf9a4bb2a6`
     ).then((res)=> {
         // JSON.parse() 바디+헤더 존재할때 json으로 받고 바디만 존재할땐 parse()
         return res.json(); 
     }).then((json)=> {
-        console.log(json.name, json.weather[0].description); //then을 리턴하면 한번 더 then을 쓸 수 있음
+        console.log(json.name, json.weather[0].main); //then을 리턴하면 한번 더 then을 쓸 수 있음
     })
     .catch((err)=> { //에러가 발생할 경우
         console.error(err)
     })
 } // fetch는 api를 요청할떄 쓰는 함수
 
-const accessToGeo = function (position){
+const accessToGeo = function ( { coords }){ // position 객체 안의 coord 바로 뽑아오는 구조분해할당
+    const { latitude, longitude } = coords
+    console.log(latitude, longitude);
     const positionObj = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-    }
+        latitude, //latitude: latitude 이라면 latitude만 입력해도 가능(shorthand property)
+        longitude,
+    };
     weatherSearch(positionObj);
-}
+};
 
 const askForLocation = function(){
     navigator.geolocation.getCurrentPosition(accessToGeo, (err)=> {
