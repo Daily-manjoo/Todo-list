@@ -76,13 +76,22 @@ if (savedTodoList) {
     }
 }
 
-const weatherSearch = function({position}){ //position도 latitude, longitude로 구조분해할당 가능. 아랫줄 position.latitude가 아니라 latitude만 써도 됨
+const weatherDataActive = function({location, weather}){
+    const locationNameTag = document.querySelector('#location-name-tag');
+    locationNameTag.textContent = location;
+}
+
+const weatherSearch = function(position){ //position도 latitude, longitude로 구조분해할당 가능. 아랫줄 position.latitude가 아니라 latitude만 써도 됨
     fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=7a940c40f2bbdfd8cbac5abf9a4bb2a6`
     ).then((res)=> {
         // JSON.parse() 바디+헤더 존재할때 json으로 받고 바디만 존재할땐 parse()
         return res.json(); 
-    }).then((json)=> {
-        console.log(json.name, json.weather[0].main); //then을 리턴하면 한번 더 then을 쓸 수 있음
+    }).then((json)=> { //then을 리턴하면 한번 더 then을 쓸 수 있음
+        const weatherData = {
+            location: json.name,
+            weather: json.weather[0].name
+        }
+        weatherDataActive(weatherData);
     })
     .catch((err)=> { //에러가 발생할 경우
         console.error(err)
@@ -91,7 +100,6 @@ const weatherSearch = function({position}){ //position도 latitude, longitude로
 
 const accessToGeo = function ( { coords }){ // position 객체 안의 coord 바로 뽑아오는 구조분해할당
     const { latitude, longitude } = coords
-    console.log(latitude, longitude);
     const positionObj = {
         latitude, //latitude: latitude 이라면 latitude만 입력해도 가능(shorthand property)
         longitude,
