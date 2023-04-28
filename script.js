@@ -2,6 +2,7 @@ const todoInput = document.querySelector('#todo-input');
 const todoList = document.querySelector('#todo-list');
 
 const savedTodoList = JSON.parse(localStorage.getItem('saved-items')); //키 가져오기(스트링형태->객체형태)
+const savedWeatherData = JSON.parse(localStorage.getItem('saved-weather'));
 
 const createTodo = function (storageData) {
   let todoContents = todoInput.value;
@@ -74,10 +75,17 @@ if (savedTodoList) {
 }
 
 const weatherDataActive = function ({ location, weather }) {
+  const weatherMainList = ['Clear', 'Clouds', 'Drizzle', 'Rain', 'Snow', 'Thunderstorm'];
+  //weather가 이 배열에 없다면 아랫줄 weather에 fog로 재할당
+  weather = weatherMainList.includes(weather) ? weather : 'Fog'; //배열에 해당 요소가 있는지 체크하는 메소드includes
   const locationNameTag = document.querySelector('#location-name-tag');
   locationNameTag.textContent = location;
-  console.log(weather);
   document.body.style.backgroundImage = `url('./images/${weather}.jpg')`;
+
+  if (!savedWeatherData || savedWeatherData.location !== location || savedWeatherData.weather !== weather) {
+    //통신을 통해 과거에 받아온 데이터와 현재 받아온 데이터가 같지 않다면
+    localStorage.setItem('saved-weather', JSON.stringify({ location, weather }));
+  }
 };
 
 const weatherSearch = function (position) {
@@ -119,3 +127,7 @@ const askForLocation = function () {
   });
 };
 askForLocation();
+
+if (savedWeatherData) {
+  weatherDataActive(savedWeatherData);
+}
